@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Five Guys Managers</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#c62828">
+<style>
+:root{
+  --red:#c62828;
+  --bg:#f5f5f5;
+  --card:#ffffff;
+  --text:#222;
+  --muted:#666;
+  --line:#e9e9e9;
+  --green:#1b8f3a;
+  --orange:#d98e00;
+  --red2:#c62828;
+}
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background:var(--bg);color:var(--text)}
+header{background:var(--red);color:#fff;padding:16px;position:sticky;top:0;z-index:2}
+header h1{margin:0;font-size:22px}
+header p{margin:6px 0 0;font-size:13px;opacity:.95}
+main{padding:14px;max-width:860px;margin:auto}
+.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+h2,h3{margin:0 0 10px}
+label{display:block;margin:8px 0 4px;font-size:14px}
+input[type=text],input[type=date],textarea,select{
+  width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:16px;background:#fff
+}
+textarea{min-height:88px;resize:vertical}
+.check{display:block;margin:8px 0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{
+  padding:12px 14px;border:none;border-radius:10px;font-size:15px;cursor:pointer
+}
+.primary{background:var(--red);color:#fff}
+.secondary{background:#eee;color:#222}
+.dark{background:#333;color:#fff}
+.score{font-size:21px;font-weight:bold}
+.result{font-size:18px;margin-top:6px}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:bold;margin-top:8px}
+.green{background:#e8f5e9;color:var(--green)}
+.orange{background:#fff4e5;color:var(--orange)}
+.red{background:#fdecec;color:var(--red2)}
+.stat,.history{padding:10px;border:1px solid var(--line);border-radius:10px;margin-top:8px}
+.small{font-size:13px;color:var(--muted)}
+hr{border:none;border-top:1px solid var(--line);margin:12px 0}
+@media (max-width:700px){.row{grid-template-columns:1fr}}
+@media print{
+  header,.actions,#historyCard,#statsCard{display:none}
+  body{background:#fff}
+  .card{box-shadow:none;border:1px solid #ddd}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Audit Five Guys</h1>
+  <p>Suivi par manager • historique • moyenne individuelle • classement</p>
+</header>
+
+<main>
+  <div class="card">
+    <div class="row">
+      <div>
+        <label for="dateVisite">Date</label>
+        <input type="date" id="dateVisite">
+      </div>
+      <div>
+        <label for="heure">Heure de passage</label>
+        <input type="text" id="heure" placeholder="Ex : 12:15">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="manager">Manager de shift</label>
+        <input type="text" id="manager" placeholder="Nom du manager">
+      </div>
+      <div>
+        <label for="restaurant">Restaurant</label>
+        <input type="text" id="restaurant" placeholder="Nom du restaurant">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Extérieur</h3>
+    <label class="check"><input class="audit" type="checkbox"> Devanture propre</label>
+    <label class="check"><input class="audit" type="checkbox"> Enseigne allumée</label>
+    <label class="check"><input class="audit" type="checkbox"> Terrasse propre</label>
+  </div>
+
+  <div class="card">
+    <h3>Accueil client</h3>
+    <label class="check"><input class="audit" type="checkbox"> Client accueilli rapidement</label>
+    <label class="check"><input class="audit" type="checkbox"> Sourire et contact visuel</label>
+    <label class="check"><input class="audit" type="checkbox"> Une caisse ouverte</label>
+  </div>
+
+  <div class="card">
+    <h3>Salle</h3>
+    <label class="check"><input class="audit" type="checkbox"> Tables propres</label>
+    <label class="check"><input class="audit" type="checkbox"> Sol propre</label>
+    <label class="check"><input class="audit" type="checkbox"> Condiment Station propre</label>
+    <label class="check"><input class="audit" type="checkbox"> Poubelles non pleines</label>
+  </div>
+
+  <div class="card">
+    <h3>Toilettes</h3>
+    <label class="check"><input class="audit" type="checkbox"> Toilettes propres</label>
+    <label class="check"><input class="audit" type="checkbox"> Papier toilette disponible</label>
+    <label class="check"><input class="audit" type="checkbox"> Savon disponible</label>
+    <label class="check"><input class="audit" type="checkbox"> Odeur de javel / propreté</label>
+  </div>
+
+  <div class="card">
+    <h3>Produits</h3>
+    <label class="check"><input class="audit" type="checkbox"> Burger bien garni</label>
+    <label class="check"><input class="audit" type="checkbox"> Steak bien cuit et juteux</label>
+    <label class="check"><input class="audit" type="checkbox"> Frites parfaites</label>
+  </div>
+
+  <div class="card">
+    <h3>Line / Cuisine</h3>
+    <label class="check"><input class="audit" type="checkbox"> Cuisine propre</label>
+    <label class="check"><input class="audit" type="checkbox"> Standards Five Guys respectés</label>
+  </div>
+
+  <div class="card">
+    <h3>Équipe</h3>
+    <label class="check"><input class="audit" type="checkbox"> Uniforme correct</label>
+    <label class="check"><input class="audit" type="checkbox"> Manager présent</label>
+  </div>
+
+  <div class="card">
+    <h3>Service</h3>
+    <label for="ticketTime">Ticket Time</label>
+    <input type="text" id="ticketTime" placeholder="Ex : 6 min">
+    <label class="check"><input id="ticketOk" type="checkbox"> Ticket Time OK</label>
+    <label class="check"><input id="ticketNok" type="checkbox"> Ticket Time NOK</label>
+    <label class="check"><input class="audit" type="checkbox"> Organisation pendant le rush</label>
+  </div>
+
+  <div class="card">
+    <h3>Observations</h3>
+    <label for="positif">Points positifs</label>
+    <textarea id="positif"></textarea>
+    <label for="ameliorer">Points à améliorer</label>
+    <textarea id="ameliorer"></textarea>
+    <label for="actionsTxt">Actions</label>
+    <textarea id="actionsTxt"></textarea>
+  </div>
+
+  <div class="card">
+    <div id="score" class="score">Score : 0 / 23</div>
+    <div id="result" class="result">🔴 Non conforme</div>
+    <div id="badge" class="badge red">À corriger</div>
+    <div class="small" style="margin-top:8px">🟢 20-23 • 🟠 17-19 • 🔴 0-16</div>
+  </div>
+
+  <div class="card">
+    <div class="actions">
+      <button class="primary" onclick="calc()">Calculer</button>
+      <button class="dark" onclick="shareReport()">Partager</button>
+      <button class="secondary" onclick="window.print()">PDF</button>
+      <button class="secondary" onclick="saveVisit()">Enregistrer la visite</button>
+      <button class="secondary" onclick="resetForm()">Réinitialiser</button>
+    </div>
+  </div>
+
+  <div class="card" id="statsCard">
+    <h3>Statistiques managers</h3>
+    <div class="small">Moyenne par manager sur les visites enregistrées sur ce téléphone.</div>
+    <label for="managerFilter">Filtrer par manager</label>
+    <select id="managerFilter" onchange="renderStats(); renderHistory();">
+      <option value="">Tous les managers</option>
+    </select>
+    <div id="statsList"></div>
+  </div>
+
+  <div class="card" id="historyCard">
+    <h3>Historique des visites</h3>
+    <div id="historyList" class="small">Aucune visite enregistrée.</div>
+  </div>
+</main>
+
+<script>
+const HISTORY_KEY = "fiveguys_manager_history_v2";
+
+function todayISO(){
+  const d = new Date();
+  return d.toISOString().slice(0,10);
+}
+
+function allChecks(){
+  return Array.from(document.querySelectorAll(".audit"));
+}
+
+function calc(){
+  let ok = 0;
+  allChecks().forEach(c => { if(c.checked) ok++; });
+  if(ticketOk.checked && !ticketNok.checked) ok++;
+  const total = allChecks().length + 1;
+
+  let resultText = "🔴 Non conforme";
+  let badgeText = "À corriger";
+  let badgeClass = "badge red";
+
+  if(ok >= 20){
+    resultText = "🟢 Restaurant au standard";
+    badgeText = "Standard";
+    badgeClass = "badge green";
+  } else if(ok >= 17){
+    resultText = "🟠 Attention";
+    badgeText = "À surveiller";
+    badgeClass = "badge orange";
+  }
+
+  score.innerText = `Score : ${ok} / ${total}`;
+  result.innerText = resultText;
+  badge.className = badgeClass;
+  badge.innerText = badgeText;
+
+  return {ok, total, resultText};
+}
+
+function buildReport(){
+  const s = calc();
+  return `Audit Five Guys
+
+Restaurant : ${restaurant.value || "-"}
+Date : ${dateVisite.value || "-"}
+Heure : ${heure.value || "-"}
+Manager de shift : ${manager.value || "-"}
+Ticket Time : ${ticketTime.value || "-"} (${ticketOk.checked ? "OK" : ticketNok.checked ? "NOK" : "-"})
+
+${score.innerText}
+${result.innerText}
+
+Points positifs :
+${positif.value || "-"}
+
+Points à améliorer :
+${ameliorer.value || "-"}
+
+Actions :
+${actionsTxt.value || "-"}
+`;
+}
+
+async function shareReport(){
+  const text = buildReport();
+  try{
+    if(navigator.share){
+      await navigator.share({title:"Audit Five Guys", text});
+    }else if(navigator.clipboard){
+      await navigator.clipboard.writeText(text);
+      alert("Rapport copié. Colle-le dans WhatsApp, Mail ou Messages.");
+    }else{
+      alert(text);
+    }
+  }catch(e){}
+}
+
+function getHistory(){
+  try{
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+  }catch(e){
+    return [];
+  }
+}
+
+function saveHistory(arr){
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
+}
+
+function saveVisit(){
+  const s = calc();
+  const managerName = (manager.value || "").trim();
+  if(!managerName){
+    alert("Renseigne le manager de shift avant d'enregistrer.");
+    return;
+  }
+
+  const entry = {
+    id: Date.now(),
+    date: dateVisite.value || todayISO(),
+    heure: heure.value || "",
+    manager: managerName,
+    restaurant: (restaurant.value || "").trim(),
+    ticketTime: ticketTime.value || "",
+    ticketStatus: ticketOk.checked ? "OK" : ticketNok.checked ? "NOK" : "-",
+    score: s.ok,
+    total: s.total,
+    resultText: s.resultText,
+    positif: positif.value || "",
+    ameliorer: ameliorer.value || "",
+    actionsTxt: actionsTxt.value || ""
+  };
+
+  const history = getHistory();
+  history.unshift(entry);
+  saveHistory(history);
+  populateManagerFilter();
+  renderStats();
+  renderHistory();
+  alert("Visite enregistrée.");
+}
+
+function deleteVisit(id){
+  const history = getHistory().filter(v => v.id !== id);
+  saveHistory(history);
+  populateManagerFilter();
+  renderStats();
+  renderHistory();
+}
+
+function populateManagerFilter(){
+  const history = getHistory();
+  const current = managerFilter.value;
+  const managers = [...new Set(history.map(v => v.manager).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  managerFilter.innerHTML = '<option value="">Tous les managers</option>' + managers.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+  if(managers.includes(current)) managerFilter.value = current;
+}
+
+function escapeHtml(s){
+  return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+}
+
+function renderStats(){
+  const history = getHistory();
+  const filter = managerFilter.value;
+  const filtered = filter ? history.filter(v => v.manager === filter) : history;
+
+  if(!filtered.length){
+    statsList.innerHTML = '<div class="small">Aucune donnée.</div>';
+    return;
+  }
+
+  const groups = {};
+  filtered.forEach(v => {
+    if(!groups[v.manager]) groups[v.manager] = [];
+    groups[v.manager].push(v);
+  });
+
+  const ranking = Object.keys(groups).map(name => {
+    const visits = groups[name];
+    const avg = visits.reduce((sum,v)=>sum+v.score,0) / visits.length;
+    const best = Math.max(...visits.map(v => v.score));
+    const last = visits[0];
+    return {name, visits, avg, best, last};
+  }).sort((a,b) => b.avg - a.avg || b.best - a.best || b.visits.length - a.visits.length || a.name.localeCompare(b.name));
+
+  const medals = ["🥇","🥈","🥉"];
+  statsList.innerHTML = ranking.map((r, i) => {
+    let cls = "red", label = "🔴";
+    if(r.avg >= 20){ cls = "green"; label = "🟢"; }
+    else if(r.avg >= 17){ cls = "orange"; label = "🟠"; }
+    const rankBadge = medals[i] || `#${i+1}`;
+    return `<div class="stat">
+      <div><strong>${rankBadge} ${escapeHtml(r.name)}</strong></div>
+      <div>Moyenne : <strong>${r.avg.toFixed(1)} / 23</strong> ${label}</div>
+      <div class="small">Visites : ${r.visits.length} • Meilleur score : ${r.best} / 23 • Dernière visite : ${escapeHtml(r.last.date)} ${escapeHtml(r.last.heure || "")}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderHistory(){
+  const history = getHistory();
+  const filter = managerFilter.value;
+  const filtered = filter ? history.filter(v => v.manager === filter) : history;
+
+  if(!filtered.length){
+    historyList.innerHTML = "Aucune visite enregistrée.";
+    return;
+  }
+
+  historyList.innerHTML = filtered.map(v => `
+    <div class="history">
+      <div><strong>${escapeHtml(v.manager)}</strong> — ${v.score} / ${v.total}</div>
+      <div class="small">${escapeHtml(v.restaurant || "-")} • ${escapeHtml(v.date)} ${escapeHtml(v.heure || "")} • Ticket Time : ${escapeHtml(v.ticketTime || "-")} (${escapeHtml(v.ticketStatus)})</div>
+      <div>${escapeHtml(v.resultText)}</div>
+      <button class="secondary" onclick="deleteVisit(${v.id})">Supprimer</button>
+    </div>
+  `).join("");
+}
+
+function resetForm(){
+  document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = "");
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+  dateVisite.value = todayISO();
+  calc();
+}
+
+ticketOk.addEventListener("change", () => { if(ticketOk.checked) ticketNok.checked = false; });
+ticketNok.addEventListener("change", () => { if(ticketNok.checked) ticketOk.checked = false; });
+
+dateVisite.value = todayISO();
+populateManagerFilter();
+renderStats();
+renderHistory();
+calc();
+</script>
+</body>
+</html>
