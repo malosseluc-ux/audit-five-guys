@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audit Five Guys</title>
+  <meta name="theme-color" content="#c62828" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+  <style>
+    :root{
+      --red:#c62828; --dark:#222; --light:#fff; --bg:#f7f7f7; --border:#ddd;
+      --ok:#1b8f3a; --warn:#d98e00; --bad:#c62828;
+    }
+    *{box-sizing:border-box}
+    body{font-family:Arial,sans-serif;margin:0;background:var(--bg);color:var(--dark)}
+    header{background:var(--red);color:white;padding:16px;position:sticky;top:0;z-index:10}
+    header h1{margin:0;font-size:22px}
+    header p{margin:6px 0 0;font-size:13px;opacity:.95}
+    main{padding:14px;max-width:720px;margin:0 auto}
+    .card{background:white;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+    h2{margin:0 0 10px;font-size:18px}
+    label{display:block;margin:8px 0 4px;font-size:14px}
+    input[type=text], textarea{
+      width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;font-size:16px;background:#fff
+    }
+    textarea{min-height:84px;resize:vertical}
+    .check{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0}
+    .check:last-child{border-bottom:none}
+    input[type=checkbox]{transform:scale(1.25)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .ticket-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}
+    .ticket-row .mini{width:88px}
+    .pill{display:inline-block;padding:8px 12px;border-radius:999px;font-weight:bold}
+    .green{background:#e8f5e9;color:var(--ok)}
+    .orange{background:#fff4e5;color:var(--warn)}
+    .red{background:#fdecec;color:var(--bad)}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    button{
+      border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:bold;cursor:pointer
+    }
+    .primary{background:var(--red);color:white}
+    .secondary{background:#ececec;color:#222}
+    .resultBox{font-size:18px;font-weight:bold}
+    .small{font-size:13px;color:#666}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Audit Express Five Guys</h1>
+  <p>Mini-app mobile • score automatique • sauvegarde locale</p>
+</header>
+
+<main>
+  <div class="card">
+    <div class="row">
+      <div>
+        <label for="manager">Manager de shift</label>
+        <input id="manager" type="text" placeholder="Nom" />
+      </div>
+      <div>
+        <label for="heure">Heure de passage</label>
+        <input id="heure" type="text" placeholder="Ex: 12:15" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card"><h2>Extérieur</h2>
+    <label class="check"><input class="audit-check" type="checkbox"> Devanture propre</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Enseigne allumée</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Terrasse propre</label>
+  </div>
+
+  <div class="card"><h2>Accueil client</h2>
+    <label class="check"><input class="audit-check" type="checkbox"> Client accueilli rapidement</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Sourire et contact visuel</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Une caisse ouverte</label>
+  </div>
+
+  <div class="card"><h2>Salle</h2>
+    <label class="check"><input class="audit-check" type="checkbox"> Tables propres</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Sol propre</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Condiment Station propre</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Poubelles non pleines</label>
+  </div>
+
+  <div class="card"><h2>Toilettes</h2>
+    <label class="check"><input class="audit-check" type="checkbox"> Toilettes propres</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Papier toilette disponible</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Savon disponible</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Odeur de javel / propreté</label>
+  </div>
+
+  <div class="card"><h2>Produits</h2>
+    <label class="check"><input class="audit-check" type="checkbox"> Burger bien garni</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Steak bien cuit et juteux</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Frites parfaites</label>
+  </div>
+
+  <div class="card"><h2>Line / Cuisine</h2>
+    <label class="check"><input class="audit-check" type="checkbox"> Cuisine propre</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Standards Five Guys respectés</label>
+  </div>
+
+  <div class="card"><h2>Équipe</h2>
+    <label class="check"><input class="audit-check" type="checkbox"> Uniforme correct</label>
+    <label class="check"><input class="audit-check" type="checkbox"> Manager présent</label>
+  </div>
+
+  <div class="card"><h2>Service</h2>
+    <div class="ticket-row">
+      <div>
+        <label for="ticketTime">Ticket Time</label>
+        <input id="ticketTime" type="text" placeholder="Ex: 6 min" />
+      </div>
+      <label class="check mini"><input id="ticketOk" type="checkbox"> OK</label>
+      <label class="check mini"><input id="ticketNok" type="checkbox"> NOK</label>
+    </div>
+    <label class="check"><input class="audit-check" type="checkbox"> Organisation pendant le rush</label>
+    <p class="small">Le Ticket Time n’entre pas dans le score que si tu coches OK.</p>
+  </div>
+
+  <div class="card">
+    <h2>Observations</h2>
+    <label for="positif">Points positifs</label>
+    <textarea id="positif"></textarea>
+    <label for="ameliorer">Points à améliorer</label>
+    <textarea id="ameliorer"></textarea>
+    <label for="actionsTxt">Actions</label>
+    <textarea id="actionsTxt"></textarea>
+  </div>
+
+  <div class="card">
+    <h2>Résultat</h2>
+    <div id="result" class="resultBox">Score : 0 / 23</div>
+    <p id="badge" class="pill red">🔴 Non conforme</p>
+    <p class="small">🟢 20–23 • 🟠 17–19 • 🔴 0–16</p>
+  </div>
+
+  <div class="actions">
+    <button class="primary" onclick="calculer()">Calculer le résultat</button>
+    <button class="secondary" onclick="resetForm()">Réinitialiser</button>
+  </div>
+</main>
+
+<script>
+const STORAGE_KEY = "fiveguys_audit_app_v1";
+
+function allChecks(){
+  return Array.from(document.querySelectorAll(".audit-check"));
+}
+
+function calculer(){
+  const checks = allChecks();
+  let ok = checks.filter(c => c.checked).length;
+
+  const ticketOk = document.getElementById("ticketOk").checked;
+  const ticketNok = document.getElementById("ticketNok").checked;
+
+  if(ticketOk && !ticketNok){ ok += 1; }
+  const total = checks.length + 1;
+
+  let label = "🔴 Non conforme";
+  let cls = "red";
+  if(ok >= 20){ label = "🟢 Restaurant au standard"; cls = "green"; }
+  else if(ok >= 17){ label = "🟠 Attention / amélioration nécessaire"; cls = "orange"; }
+
+  document.getElementById("result").textContent = `Score : ${ok} / ${total}`;
+  const badge = document.getElementById("badge");
+  badge.textContent = label;
+  badge.className = `pill ${cls}`;
+  saveData();
+}
+
+function serialize(){
+  return {
+    manager: manager.value,
+    heure: heure.value,
+    ticketTime: ticketTime.value,
+    ticketOk: ticketOk.checked,
+    ticketNok: ticketNok.checked,
+    positif: positif.value,
+    ameliorer: ameliorer.value,
+    actionsTxt: actionsTxt.value,
+    checks: allChecks().map(c => c.checked)
+  };
+}
+
+function saveData(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(serialize()));
+}
+
+function loadData(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    manager.value = data.manager || "";
+    heure.value = data.heure || "";
+    ticketTime.value = data.ticketTime || "";
+    ticketOk.checked = !!data.ticketOk;
+    ticketNok.checked = !!data.ticketNok;
+    positif.value = data.positif || "";
+    ameliorer.value = data.ameliorer || "";
+    actionsTxt.value = data.actionsTxt || "";
+    const checks = allChecks();
+    (data.checks || []).forEach((v,i)=>{ if(checks[i]) checks[i].checked = !!v; });
+    calculer();
+  }catch(e){}
+}
+
+function resetForm(){
+  if(!confirm("Réinitialiser toute la checklist ?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  document.querySelectorAll("input[type=text], textarea").forEach(el => el.value = "");
+  document.querySelectorAll("input[type=checkbox]").forEach(el => el.checked = false);
+  calculer();
+}
+
+document.addEventListener("input", saveData);
+document.addEventListener("change", saveData);
+
+ticketOk.addEventListener("change", ()=>{
+  if(ticketOk.checked) ticketNok.checked = false;
+  saveData(); calculer();
+});
+ticketNok.addEventListener("change", ()=>{
+  if(ticketNok.checked) ticketOk.checked = false;
+  saveData(); calculer();
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js");
+  });
+}
+
+loadData();
+calculer();
+</script>
+</body>
+</html>
